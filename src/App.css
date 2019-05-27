@@ -31,3 +31,27 @@
     transform: rotate(360deg);
   }
 }
+
+.totalSales {
+    font-size: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 45px;
+}
+
+.salesByCountry {
+    display: flex;
+    flex-direction: column;
+}
+
+.countryRow {
+    display: flex;
+}
+
+.countryName {
+    width: 100px;
+    margin-right: 40px;
+    text-align: right;
+    font-weight: 600;
+}
