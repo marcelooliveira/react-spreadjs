@@ -12,15 +12,19 @@ export class Dashboard extends React.Component {
             totalSales: 123,
             chartData: [
                 {
+                    country: 'country 1',
                     value: 100
                 }, {
+                    country: 'country 2',
                     value: 200
                 }
             ],
             personSales: [
                 {
+                    soldBy: 'person 1',
                     value: 100
                 }, {
+                    soldBy: 'person 2',
                     value: 200
                 }
             ]
@@ -31,8 +35,8 @@ export class Dashboard extends React.Component {
         return (
             <div style={{ backgroundColor : '#ddd' }}>
                 <NavBar title="Awesome Dashboard" />
-                <div class="container">
-                    <div class="row">
+                <div className="container">
+                    <div className="row">
                         <TotalSales total={this.state.totalSales}/>
                         <SalesByCountry salesData={this.state.chartData}/>
                         <SalesByPerson salesData={this.state.personSales}/>

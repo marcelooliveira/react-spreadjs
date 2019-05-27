@@ -1,9 +1,8 @@
 import React from 'react';
 import { TablePanel } from "./TablePanel";
-import { ChartPanel } from './ChartPanel.js'
 
 // SpreadJS imports
-import { SpreadSheets, Worksheet, Column } from '@grapecity/spread-sheets-react';
+import '@grapecity/spread-sheets-react';
 /* eslint-disable */
 import "@grapecity/spread-sheets/styles/gc.spread.sheets.excel2016colorful.css";
 import Excel from "@grapecity/spread-excelio";
