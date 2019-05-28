@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { TablePanel } from "./TablePanel";
 
 // SpreadJS imports
@@ -11,11 +11,11 @@ import { extractSheetData } from "../util/util.js";
 import { SpreadSheets, Worksheet, Column } from '@grapecity/spread-sheets-react';
 
 //todo: withCommas
-export function SalesTable(props) {
+export const SalesTable = ({ tableData, valueChanged } ) => {
     const config = {
         sheetName: 'Sales Data',
         hostClass: 'Spreadsheet',
-        autoGenerateColumns: true,
+        autoGenerateColumns: false,
         width: 200,
         visible: true,
         resizable: true,
@@ -28,10 +28,11 @@ export function SalesTable(props) {
         }
     }
 
-    var _spread;
+    const [_spread, setSpread] = useState({});
 
     function workbookInit(spread) {
-        _spread = spread;
+        //_spread = spread;
+        setSpread(spread)
     }
     
     function fileChange(e) {
@@ -68,18 +69,14 @@ export function SalesTable(props) {
             saveAs(blob, fileName);
         }, function (e) {  
             alert(e);  
-        });
-    }
-
-    function valueChanged(e) {
-        props.onValueChanged(e.target.value);
+        });     
     }
 
     return (
         <TablePanel key={config.chartKey} title="Recent Sales">
             <div style={{width:'100%',height:'400px',border: '1px solid lightgray'}}>
-            <SpreadSheets workbookInitialized={workbookInit} valueChanged={valueChanged}>
-                <Worksheet name={config.sheetName} dataSource={props.tableData} autoGenerateColumns='autoGenerateColumns'>
+                <SpreadSheets workbookInitialized={workbookInit} valueChanged={valueChanged}>
+                    <Worksheet name={config.sheetName} dataSource={tableData} autoGenerateColumns={config.autoGenerateColumns}>
                     <Column width={50} dataField='id' headerText="ID"></Column>
                     <Column width={200} dataField='client' headerText="Client"></Column>
                     <Column width={320} dataField='description' headerText="Description"></Column>

@@ -7,9 +7,9 @@ import { SalesTable } from './SalesTable'
 import { groupBySum } from "../util/util";
 import { recentSales } from "../data/data";
 
-export function Dashboard() {
+export const Dashboard = () => {
 
-    const[sales, setSales] = new useState(recentSales.slice(0, recentSales.length));
+    const[sales, setSales] = new useState(recentSales.slice());
 
     function totalSales() {
       const items = sales;
@@ -36,19 +36,19 @@ export function Dashboard() {
       return sales;
     };
 
-    function onValueChanged(data) {
-        setSales(data);
+    function handleValueChanged(e, obj) {
+        setSales(sales.slice());
     }
-    
+
     return (
-        <div style={{ backgroundColor : '#ddd' }}>
+        <div style={{ backgroundColor: '#ddd' }}>
             <NavBar title="Awesome Dashboard" />
             <div className="container">
                 <div className="row">
                     <TotalSales total={totalSales()}/>
                     <SalesByCountry salesData={chartData()}/>
                     <SalesByPerson salesData={personSales()}/>
-                    <SalesTable tableData={salesTableData()} onValueChanged={onValueChanged}/>
+                    <SalesTable tableData={salesTableData()} valueChanged={handleValueChanged}/>
                 </div>
             </div>
         </div>
