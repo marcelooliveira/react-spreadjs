@@ -9,7 +9,7 @@ import { recentSales } from "../data/data";
 
 export function Dashboard() {
 
-    const[sales, setSales] = new useState(recentSales);
+    const[sales, setSales] = new useState(recentSales.slice(0, recentSales.length));
 
     function totalSales() {
       const items = sales;
@@ -35,16 +35,20 @@ export function Dashboard() {
     function salesTableData() {
       return sales;
     };
+
+    function onValueChanged(data) {
+        setSales(data);
+    }
     
     return (
         <div style={{ backgroundColor : '#ddd' }}>
             <NavBar title="Awesome Dashboard" />
             <div className="container">
                 <div className="row">
-                    <TotalSales value={totalSales()}/>
+                    <TotalSales total={totalSales()}/>
                     <SalesByCountry salesData={chartData()}/>
                     <SalesByPerson salesData={personSales()}/>
-                    <SalesTable tableData={salesTableData()}/>
+                    <SalesTable tableData={salesTableData()} onValueChanged={onValueChanged}/>
                 </div>
             </div>
         </div>

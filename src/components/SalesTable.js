@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TablePanel } from "./TablePanel";
 
 // SpreadJS imports
@@ -8,24 +8,30 @@ import "@grapecity/spread-sheets/styles/gc.spread.sheets.excel2016colorful.css";
 import Excel from "@grapecity/spread-excelio";
 import { saveAs } from 'file-saver';
 import { extractSheetData } from "../util/util.js";
+import { SpreadSheets, Worksheet, Column } from '@grapecity/spread-sheets-react';
 
 //todo: withCommas
 export function SalesTable(props) {
-    function data() {
-        return {
+    const config = {
         sheetName: 'Sales Data',
-        hostClass:'spreadsheet',
-        autoGenerateColumns:true,
-        width:200,
-        visible:true,
-        resizable:true,
-        priceFormatter:"$ #.00",
-        chartKey: 1
+        hostClass: 'Spreadsheet',
+        autoGenerateColumns: true,
+        width: 200,
+        visible: true,
+        resizable: true,
+        priceFormatter: '$ #.00',
+        chartKey: 1,
+        hostStyle: { 
+            width: '100%',
+            height: '400px',
+            border: '1px solid lightgray'
         }
     }
 
+    var _spread;
+
     function workbookInit(spread) {
-        this._spread = spread;
+        _spread = spread;
     }
     
     function fileChange(e) {
@@ -36,7 +42,7 @@ export function SalesTable(props) {
             const store = this.$store;
 
             const deserializationOptions = {
-            frozenRowsAsColumnHeaders: true
+                frozenRowsAsColumnHeaders: true
             };
 
             excelIO.open(fileDom.files[0], (data) => {
@@ -48,7 +54,7 @@ export function SalesTable(props) {
     }
 
     function exportSheet() {
-        const spread = this._spread;
+        const spread = _spread;
         const fileName = "SalesData.xlsx";
 
         const sheet = spread.getSheet(0);
@@ -65,71 +71,34 @@ export function SalesTable(props) {
         });
     }
 
+    function valueChanged(e) {
+        props.onValueChanged(e.target.value);
+    }
+
     return (
-        <TablePanel key={props.chartKey} title="Recent Sales">
-        <gc-spread-sheets hostClass={props.hostClass} workbookInitialized='workbookInit'>
-            <gc-worksheet dataSource={props.tableData} name="sheetName" autoGenerateColumns='autoGenerateColumns'>
-            <gc-column
-                width='50'
-                dataField="'id'"
-                headerText="'ID'"
-                visible = 'visible'
-                resizable = 'resizable'
-                ></gc-column>
-            <gc-column
-                width='200'
-                dataField="'client'"
-                headerText="'Client'"
-                visible = 'visible'
-                resizable = 'resizable'
-                ></gc-column>
-            <gc-column
-                width="320"
-                headerText="'Description'"
-                dataField="'description'"
-                visible = 'visible'
-                resizable = 'resizable'
-                ></gc-column>
-            <gc-column
-                width="100"
-                dataField="'value'"
-                headerText="'Value'"
-                visible = 'visible'
-                formatter = 'priceFormatter'
-                resizable = 'resizable'
-                ></gc-column>
-                <gc-column
-                width="100"
-                dataField="'itemCount'"
-                headerText="'Quantity'"
-                visible = 'visible'
-                resizable = 'resizable'
-                ></gc-column>
-                <gc-column
-                width="100"
-                dataField="'soldBy'"
-                headerText="'Sold By'"
-                visible = 'visible'
-                resizable = 'resizable'
-                ></gc-column>
-                <gc-column
-                width="100"
-                dataField="'country'"
-                headerText="'Country'"
-                visible = 'visible'
-                resizable = 'resizable'
-                ></gc-column>
-            </gc-worksheet>
-        </gc-spread-sheets>
-        <div class="dashboardRow">
-            <button class="btn btn-primary dashboardButton" click="exportSheet">Export to Excel</button>
-            <div>
-            <b>Import Excel File:</b>
-            <div>
-                <input type="file" class="fileSelect" change='fileChange($event)' />
+        <TablePanel key={config.chartKey} title="Recent Sales">
+            <div style={{width:'100%',height:'400px',border: '1px solid lightgray'}}>
+            <SpreadSheets workbookInitialized={workbookInit} valueChanged={valueChanged}>
+                <Worksheet name={config.sheetName} dataSource={props.tableData} autoGenerateColumns='autoGenerateColumns'>
+                    <Column width={50} dataField='id' headerText="ID"></Column>
+                    <Column width={200} dataField='client' headerText="Client"></Column>
+                    <Column width={320} dataField='description' headerText="Description"></Column>
+                    <Column width={100} dataField='value' headerText="Value" formatter={config.priceFormatter} resizable="resizable"></Column>
+                    <Column width={100} dataField='itemCount' headerText="Quantity"></Column>
+                    <Column width={100} dataField='soldBy' headerText="Sold By"></Column>
+                    <Column width={100} dataField='country' headerText="Country"></Column>                   
+                </Worksheet>
+            </SpreadSheets>
             </div>
+            <div className="dashboardRow">
+                <button className="btn btn-primary dashboardButton" onClick={exportSheet}>Export to Excel</button>
+                <div>
+                <b>Import Excel File:</b>
+                <div>
+                    <input type="file" className="fileSelect" change='fileChange($event)' />
+                </div>
+                </div>
             </div>
-        </div>
         </TablePanel>
     );
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChartPanel } from './ChartPanel.js'
+import { withCommas } from "../util/util";
 
 //todo: withCommas
 export function SalesByCountry(props) {
@@ -12,9 +13,9 @@ export function SalesByCountry(props) {
             <div className="salesByCountry">
                 {sales().map((sale, index) => {
                 return (
-                    <div key={sale.country} class="countryRow">
-                        <div class="countryName">{sale.country}</div>
-                        <div class="countryAmount">{sale.value}</div>
+                    <div key={sale.country} className="countryRow">
+                        <div className="countryName">{sale.country}</div>
+                        <div className="countryAmount">${withCommas(sale.value)}</div>
                     </div>
                 );
                 })}
