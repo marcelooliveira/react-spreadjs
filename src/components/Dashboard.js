@@ -1,4 +1,4 @@
-﻿import React from 'react';
+﻿import React, { useState } from 'react';
 import { NavBar } from './NavBar'
 import { TotalSales } from './TotalSales'
 import { SalesByCountry } from './SalesByCountry'
@@ -7,56 +7,47 @@ import { SalesTable } from './SalesTable'
 import { groupBySum } from "../util/util";
 import { recentSales } from "../data/data";
 
-export class Dashboard extends React.Component {
-    constructor(props) {
-        super(props)
+export function Dashboard() {
 
-        this.store = {
-          state: {
-            recentSales
-          }
-        };
-    }
+    const[sales, setSales] = new useState(recentSales);
 
-    totalSales() {
-      const items = this.store.state.recentSales;
+    function totalSales() {
+      const items = sales;
       const total = items.reduce(
         (acc, sale) => (acc += sale.value),
         0
       );
       return parseInt(total);
-    }
+    };
 
-    chartData() {
-      const items = this.store.state.recentSales;
+    function chartData() {
+      const items = sales;
       const groups = groupBySum(items, "country", "value");
       return groups;
-    }
+    };
 
-    personSales() {
-      const items = this.store.state.recentSales;
+    function personSales() {
+      const items = sales;
       const groups = groupBySum(items, "soldBy", "value");
       return groups;
-    }
+    };
 
-    salesTableData() {
-      return this.store.state.recentSales;
-    }
+    function salesTableData() {
+      return sales;
+    };
     
-    render() {
-        return (
-            <div style={{ backgroundColor : '#ddd' }}>
-                <NavBar title="Awesome Dashboard" />
-                <div className="container">
-                    <div className="row">
-                        <TotalSales value={this.totalSales()}/>
-                        <SalesByCountry salesData={this.chartData()}/>
-                        <SalesByPerson salesData={this.personSales()}/>
-                        <SalesTable tableData={this.salesTableData()}/>
-                    </div>
+    return (
+        <div style={{ backgroundColor : '#ddd' }}>
+            <NavBar title="Awesome Dashboard" />
+            <div className="container">
+                <div className="row">
+                    <TotalSales value={totalSales()}/>
+                    <SalesByCountry salesData={chartData()}/>
+                    <SalesByPerson salesData={personSales()}/>
+                    <SalesTable tableData={salesTableData()}/>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
 

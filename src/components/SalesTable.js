@@ -10,17 +10,9 @@ import { saveAs } from 'file-saver';
 import { extractSheetData } from "../util/util.js";
 
 //todo: withCommas
-export class SalesTable extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            counter: 0
-        }
-        //this.addOne = this.addOne.bind(this)
-    }
-
-  data() {
-      return {
+export function SalesTable(props) {
+    function data() {
+        return {
         sheetName: 'Sales Data',
         hostClass:'spreadsheet',
         autoGenerateColumns:true,
@@ -29,14 +21,14 @@ export class SalesTable extends React.Component {
         resizable:true,
         priceFormatter:"$ #.00",
         chartKey: 1
-      }
-  }
+        }
+    }
 
-    workbookInit(spread) {
+    function workbookInit(spread) {
         this._spread = spread;
     }
     
-    fileChange(e) {
+    function fileChange(e) {
         if (this._spread) {
             const fileDom = e.target || e.srcElement;
             const excelIO = new Excel.IO();
@@ -55,7 +47,7 @@ export class SalesTable extends React.Component {
         }
     }
 
-    exportSheet() {
+    function exportSheet() {
         const spread = this._spread;
         const fileName = "SalesData.xlsx";
 
@@ -73,74 +65,71 @@ export class SalesTable extends React.Component {
         });
     }
 
-
-    render() {
-        return (
-          <TablePanel key={this.props.chartKey} title="Recent Sales">
-            <gc-spread-sheets hostClass={this.props.hostClass} workbookInitialized='workbookInit'>
-              <gc-worksheet dataSource={this.props.tableData} name="sheetName" autoGenerateColumns='autoGenerateColumns'>
+    return (
+        <TablePanel key={props.chartKey} title="Recent Sales">
+        <gc-spread-sheets hostClass={props.hostClass} workbookInitialized='workbookInit'>
+            <gc-worksheet dataSource={props.tableData} name="sheetName" autoGenerateColumns='autoGenerateColumns'>
+            <gc-column
+                width='50'
+                dataField="'id'"
+                headerText="'ID'"
+                visible = 'visible'
+                resizable = 'resizable'
+                ></gc-column>
+            <gc-column
+                width='200'
+                dataField="'client'"
+                headerText="'Client'"
+                visible = 'visible'
+                resizable = 'resizable'
+                ></gc-column>
+            <gc-column
+                width="320"
+                headerText="'Description'"
+                dataField="'description'"
+                visible = 'visible'
+                resizable = 'resizable'
+                ></gc-column>
+            <gc-column
+                width="100"
+                dataField="'value'"
+                headerText="'Value'"
+                visible = 'visible'
+                formatter = 'priceFormatter'
+                resizable = 'resizable'
+                ></gc-column>
                 <gc-column
-                    width='50'
-                    dataField="'id'"
-                    headerText="'ID'"
-                    visible = 'visible'
-                    resizable = 'resizable'
-                  ></gc-column>
+                width="100"
+                dataField="'itemCount'"
+                headerText="'Quantity'"
+                visible = 'visible'
+                resizable = 'resizable'
+                ></gc-column>
                 <gc-column
-                    width='200'
-                    dataField="'client'"
-                    headerText="'Client'"
-                    visible = 'visible'
-                    resizable = 'resizable'
-                  ></gc-column>
+                width="100"
+                dataField="'soldBy'"
+                headerText="'Sold By'"
+                visible = 'visible'
+                resizable = 'resizable'
+                ></gc-column>
                 <gc-column
-                    width="320"
-                    headerText="'Description'"
-                    dataField="'description'"
-                    visible = 'visible'
-                    resizable = 'resizable'
-                  ></gc-column>
-                <gc-column
-                    width="100"
-                    dataField="'value'"
-                    headerText="'Value'"
-                    visible = 'visible'
-                    formatter = 'priceFormatter'
-                    resizable = 'resizable'
-                  ></gc-column>
-                  <gc-column
-                    width="100"
-                    dataField="'itemCount'"
-                    headerText="'Quantity'"
-                    visible = 'visible'
-                    resizable = 'resizable'
-                  ></gc-column>
-                  <gc-column
-                    width="100"
-                    dataField="'soldBy'"
-                    headerText="'Sold By'"
-                    visible = 'visible'
-                    resizable = 'resizable'
-                  ></gc-column>
-                  <gc-column
-                    width="100"
-                    dataField="'country'"
-                    headerText="'Country'"
-                    visible = 'visible'
-                    resizable = 'resizable'
-                  ></gc-column>
-              </gc-worksheet>
-            </gc-spread-sheets>
-            <div class="dashboardRow">
-              <button class="btn btn-primary dashboardButton" click="exportSheet">Export to Excel</button>
-              <div>
-                <b>Import Excel File:</b>
-                <div>
-                  <input type="file" class="fileSelect" change='fileChange($event)' />
-                </div>
-              </div>
+                width="100"
+                dataField="'country'"
+                headerText="'Country'"
+                visible = 'visible'
+                resizable = 'resizable'
+                ></gc-column>
+            </gc-worksheet>
+        </gc-spread-sheets>
+        <div class="dashboardRow">
+            <button class="btn btn-primary dashboardButton" click="exportSheet">Export to Excel</button>
+            <div>
+            <b>Import Excel File:</b>
+            <div>
+                <input type="file" class="fileSelect" change='fileChange($event)' />
             </div>
-          </TablePanel>
-        );
-    }
+            </div>
+        </div>
+        </TablePanel>
+    );
 }
