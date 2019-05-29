@@ -10,8 +10,7 @@ import { saveAs } from 'file-saver';
 import { extractSheetData } from "../util/util.js";
 import { SpreadSheets, Worksheet, Column } from '@grapecity/spread-sheets-react';
 
-//todo: withCommas
-export const SalesTable = ({ tableData, valueChanged } ) => {
+export const SalesTable = ({ tableData, valueChanged, fileImported } ) => {
     const config = {
         sheetName: 'Sales Data',
         hostClass: 'Spreadsheet',
@@ -31,25 +30,22 @@ export const SalesTable = ({ tableData, valueChanged } ) => {
     const [_spread, setSpread] = useState({});
 
     function workbookInit(spread) {
-        //_spread = spread;
         setSpread(spread)
     }
     
     function fileChange(e) {
-        if (this._spread) {
+        if (_spread) {
             const fileDom = e.target || e.srcElement;
             const excelIO = new Excel.IO();
-            const spread = this._spread;
-            const store = this.$store;
+            const spread = _spread;
 
             const deserializationOptions = {
                 frozenRowsAsColumnHeaders: true
             };
 
             excelIO.open(fileDom.files[0], (data) => {
-            console.dir(extractSheetData(data));
-            const newSalesData = extractSheetData(data);
-            store.commit('updateRecentSales', newSalesData)
+                console.dir(extractSheetData(data));
+                fileImported(extractSheetData(data));
             });
         }
     }
@@ -92,7 +88,7 @@ export const SalesTable = ({ tableData, valueChanged } ) => {
                 <div>
                 <b>Import Excel File:</b>
                 <div>
-                    <input type="file" className="fileSelect" change='fileChange($event)' />
+                    <input type="file" className="fileSelect" onChange={ (e) => fileChange(e) } />
                 </div>
                 </div>
             </div>
