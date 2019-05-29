@@ -39,7 +39,6 @@ export const SalesTable = ({ tableData, valueChanged, fileImported } ) => {
             };
 
             excelIO.open(fileDom.files[0], (data) => {
-                console.dir(extractSheetData(data));
                 fileImported(extractSheetData(data));
             });
         }
