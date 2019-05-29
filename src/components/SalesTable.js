@@ -13,18 +13,13 @@ import { SpreadSheets, Worksheet, Column } from '@grapecity/spread-sheets-react'
 export const SalesTable = ({ tableData, valueChanged, fileImported } ) => {
     const config = {
         sheetName: 'Sales Data',
-        hostClass: 'Spreadsheet',
+        hostClass: ' spreadsheet',
         autoGenerateColumns: false,
         width: 200,
         visible: true,
         resizable: true,
         priceFormatter: '$ #.00',
-        chartKey: 1,
-        hostStyle: { 
-            width: '100%',
-            height: '400px',
-            border: '1px solid lightgray'
-        }
+        chartKey: 1
     }
 
     const [_spread, setSpread] = useState({});
@@ -70,9 +65,8 @@ export const SalesTable = ({ tableData, valueChanged, fileImported } ) => {
 
     return (
         <TablePanel key={config.chartKey} title="Recent Sales">
-            <div style={{width:'100%',height:'400px',border: '1px solid lightgray'}}>
-                <SpreadSheets workbookInitialized={workbookInit} valueChanged={valueChanged}>
-                    <Worksheet name={config.sheetName} dataSource={tableData} autoGenerateColumns={config.autoGenerateColumns}>
+            <SpreadSheets hostClass={config.hostClass} workbookInitialized={workbookInit} valueChanged={valueChanged}>
+                <Worksheet name={config.sheetName} dataSource={tableData} autoGenerateColumns={config.autoGenerateColumns}>
                     <Column width={50} dataField='id' headerText="ID"></Column>
                     <Column width={200} dataField='client' headerText="Client"></Column>
                     <Column width={320} dataField='description' headerText="Description"></Column>
@@ -82,7 +76,6 @@ export const SalesTable = ({ tableData, valueChanged, fileImported } ) => {
                     <Column width={100} dataField='country' headerText="Country"></Column>                   
                 </Worksheet>
             </SpreadSheets>
-            </div>
             <div className="dashboardRow">
                 <button className="btn btn-primary dashboardButton" onClick={exportSheet}>Export to Excel</button>
                 <div>
