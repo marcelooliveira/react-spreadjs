@@ -36,14 +36,6 @@ export const Dashboard = () => {
       return sales;
     };
 
-    function handleValueChanged(tableData) {
-        setSales(tableData.slice(0));
-    }
-
-    function handleFileImported(newSales) {
-        setSales(newSales.slice(0));
-    }
-
     return (
         <div style={{ backgroundColor: '#ddd' }}>
             <NavBar title="Awesome Dashboard" />
@@ -52,9 +44,7 @@ export const Dashboard = () => {
                     <TotalSales total={totalSales()}/>
                     <SalesByCountry salesData={chartData()}/>
                     <SalesByPerson salesData={personSales()}/>
-                    <SalesTable tableData={salesTableData()} 
-                        valueChangedCallback={handleValueChanged}
-                        fileImportedCallback={handleFileImported}/>
+                    <SalesTable tableData={salesTableData()}/>
                 </div>
             </div>
         </div>
