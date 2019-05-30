@@ -10,7 +10,7 @@ import { saveAs } from 'file-saver';
 import { extractSheetData } from "../util/util.js";
 import { SpreadSheets, Worksheet, Column } from '@grapecity/spread-sheets-react';
 
-export const SalesTable = ({ tableData, valueChanged, fileImported } ) => {
+export const SalesTable = ({ tableData, valueChangedCallback, fileImportedCallback } ) => {
     const config = {
         sheetName: 'Sales Data',
         hostClass: ' spreadsheet',
@@ -39,7 +39,8 @@ export const SalesTable = ({ tableData, valueChanged, fileImported } ) => {
             };
 
             excelIO.open(fileDom.files[0], (data) => {
-                fileImported(extractSheetData(data));
+                const newSalesData = extractSheetData(data);
+                fileImportedCallback(newSalesData);
             });
         }
     }
@@ -62,9 +63,15 @@ export const SalesTable = ({ tableData, valueChanged, fileImported } ) => {
         });     
     }
 
+    function handleValueChanged(e, obj) {
+        valueChangedCallback(obj.sheet.getDataSource());
+    }
+
+    handleValueChanged.bind(this);
+
     return (
         <TablePanel key={config.chartKey} title="Recent Sales">
-            <SpreadSheets hostClass={config.hostClass} workbookInitialized={workbookInit} valueChanged={valueChanged}>
+            <SpreadSheets hostClass={config.hostClass} workbookInitialized={workbookInit} valueChanged={handleValueChanged}>
                 <Worksheet name={config.sheetName} dataSource={tableData} autoGenerateColumns={config.autoGenerateColumns}>
                     <Column width={50} dataField='id' headerText="ID"></Column>
                     <Column width={200} dataField='client' headerText="Client"></Column>

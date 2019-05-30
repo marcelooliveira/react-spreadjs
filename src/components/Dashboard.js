@@ -36,12 +36,12 @@ export const Dashboard = () => {
       return sales;
     };
 
-    function handleCellChanged() {
-        setSales(sales.slice());
+    function handleCellChanged(tableData) {
+        setSales(tableData.slice());
     }
 
     function handleFileImported(newSales) {
-        setSales(newSales);
+        setSales(newSales.slice());
     }
 
     return (
@@ -53,8 +53,8 @@ export const Dashboard = () => {
                     <SalesByCountry salesData={chartData()}/>
                     <SalesByPerson salesData={personSales()}/>
                     <SalesTable tableData={salesTableData()} 
-                        valueChanged={handleCellChanged}
-                        fileImported={handleFileImported}/>
+                        valueChangedCallback={handleCellChanged}
+                        fileImportedCallback={handleFileImported}/>
                 </div>
             </div>
         </div>
