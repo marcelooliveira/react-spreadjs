@@ -37,11 +37,11 @@ export const Dashboard = () => {
     };
 
     function handleValueChanged(tableData) {
-        setSales(tableData.slice());
+        setSales(tableData.slice(0));
     }
 
     function handleFileImported(newSales) {
-        setSales(newSales.slice());
+        setSales(newSales.slice(0));
     }
 
     return (
