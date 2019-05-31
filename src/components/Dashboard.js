@@ -36,10 +36,6 @@ export const Dashboard = () => {
       return sales;
     };
 
-    function handleValueChanged(e, obj) {
-        setSales(sales.slice());
-    }
-
     return (
         <div style={{ backgroundColor: '#ddd' }}>
             <NavBar title="Awesome Dashboard" />
@@ -48,7 +44,7 @@ export const Dashboard = () => {
                     <TotalSales total={totalSales()}/>
                     <SalesByCountry salesData={chartData()}/>
                     <SalesByPerson salesData={personSales()}/>
-                    <SalesTable tableData={salesTableData()} valueChanged={handleValueChanged}/>
+                    <SalesTable tableData={salesTableData()}/>
                 </div>
             </div>
         </div>
