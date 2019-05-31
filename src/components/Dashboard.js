@@ -36,6 +36,17 @@ export const Dashboard = () => {
       return sales;
     };
 
+<<<<<<< HEAD
+=======
+    function handleValueChanged(tableData) {
+        setSales(tableData.slice());
+    }
+
+    function handleFileImported(newSales) {
+        setSales(newSales.slice());
+    }
+
+>>>>>>> parent of 05e3563... .
     return (
         <div style={{ backgroundColor: '#ddd' }}>
             <NavBar title="Awesome Dashboard" />
