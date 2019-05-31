@@ -36,17 +36,14 @@ export const Dashboard = () => {
       return sales;
     };
 
-<<<<<<< HEAD
-=======
     function handleValueChanged(tableData) {
-        setSales(tableData.slice());
+        setSales(tableData.slice(0));
     }
 
     function handleFileImported(newSales) {
-        setSales(newSales.slice());
+        setSales(newSales.slice(0));
     }
 
->>>>>>> parent of 05e3563... .
     return (
         <div style={{ backgroundColor: '#ddd' }}>
             <NavBar title="Awesome Dashboard" />
@@ -55,7 +52,9 @@ export const Dashboard = () => {
                     <TotalSales total={totalSales()}/>
                     <SalesByCountry salesData={chartData()}/>
                     <SalesByPerson salesData={personSales()}/>
-                    <SalesTable tableData={salesTableData()}/>
+                    <SalesTable tableData={salesTableData()} 
+                        valueChangedCallback={handleValueChanged}
+                        fileImportedCallback={handleFileImported}/>
                 </div>
             </div>
         </div>
