@@ -95,6 +95,7 @@
     font-weight: 600;
 }
 
+/*SpreadJS Spreadsheet Styling*/ 
 .container.spreadsheet {
     width: 100% !important;
     height: 400px !important;
