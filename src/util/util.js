@@ -12,12 +12,12 @@ export const groupBySum = (items, groupByProp, sumProp) => {
       }
     }
     const sums = [];
-    for (const [key, value] of groups) {
+    groups.forEach((value, key, m) => {
       sums.push({
         [groupByProp]: key,
         [sumProp]: value
       });
-    }
+    });
     return sums;
   };
 
