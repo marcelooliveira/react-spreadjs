@@ -9,7 +9,7 @@ import { recentSales } from "../data/data";
 
 export const Dashboard = () => {
 
-    const[sales, setSales] = new useState(recentSales.slice());
+    const[sales, setSales] = new useState(recentSales);
 
     function totalSales() {
       const items = sales;
